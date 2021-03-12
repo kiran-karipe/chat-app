@@ -1,0 +1,8 @@
+<div class="chat-container">
+    <div class="side-menu">
+        <app-side-menu-container></app-side-menu-container>
+    </div>
+    <div class="chat-box">
+        <app-chat-box-container (sendMessageEvent)="sendMessage($event)"></app-chat-box-container>
+    </div>
+</div>

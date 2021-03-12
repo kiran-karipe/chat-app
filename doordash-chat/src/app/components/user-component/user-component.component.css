@@ -1,0 +1,12 @@
+.user {
+    padding: 5% 0% 0% 15%;
+    color: #fff;
+}
+.username {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.status {
+    font-size: 14px;
+}

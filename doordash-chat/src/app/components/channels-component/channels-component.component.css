@@ -1,0 +1,13 @@
+ul {
+    padding: 0;
+    list-style-type: none;
+}
+
+.channel {
+    padding: 5% 4% 5% 15%;
+    color: #fff;
+}
+
+.channel:hover {
+    background-color: blue;
+}

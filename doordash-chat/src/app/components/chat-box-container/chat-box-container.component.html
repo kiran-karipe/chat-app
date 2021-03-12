@@ -1,0 +1,12 @@
+<div class="channel one-edge-shadow">
+    <span class="channel-name">Channel Name</span>
+</div>
+<div class="chat-messages">
+    <div class="your-message-div" *ngFor="let message of messages">
+        <span class="your-message">{{message.message}}</span>
+    </div>
+</div>
+<div class="message-div">
+    <input class="message-input" [(ngModel)]="inputMessage" (keyup)="onMessageKeyUp($event)">
+    <button class="send-button" (click)="onMessageSend()">Send</button>
+</div>

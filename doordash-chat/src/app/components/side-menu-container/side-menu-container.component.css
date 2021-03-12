@@ -1,0 +1,17 @@
+/* .side-menu-container {
+    border: 1px solid black;
+    width: 45%;
+    position: relative;
+} */
+
+.side-menu-container {
+    height: 100%;
+}
+
+.user {
+    height: 15%;
+}
+
+.channels {
+    height: 80%;
+}
