@@ -1,0 +1,36 @@
+.userNameContainer {
+    height: 50%;
+    width: 50%;
+    margin: auto;
+    text-align: center;
+    position: relative;
+    top: 40%;
+}
+
+.userNameInput {
+    height: 10%;
+    margin-bottom: 4%;
+}
+.userName {
+    width: 42%;
+    height: 100%;
+    outline: none;
+    border: 1px solid #e1e2e4;
+    border-radius: 3px;
+    box-shadow: inset 0px 0px 2px 0px #e1e2e4;
+}
+
+.submitBtn {
+    height: 12%;
+}
+
+.submitBtn > button {
+    width: 43%;
+    height: 100%;
+}
+
+.enabled {
+    background-color: #ff1940;
+    border: none;
+    color: #fff;
+}

@@ -1,7 +1,8 @@
 <div>
     <ul>
-        <li *ngFor="let channel of channels" class="channel">
-            <a>{{channel}}</a>
+        <li *ngFor="let channel of channels" class="channel" 
+            [ngClass]="{'selected': channel.name === selectedChannel.name}" (click)="onChannelSelect(channel)">
+            <a>{{channel.name}}</a>
         </li>
     </ul>
 </div>

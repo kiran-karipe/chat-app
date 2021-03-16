@@ -4,10 +4,14 @@ ul {
 }
 
 .channel {
-    padding: 5% 4% 5% 15%;
+    padding: 3% 4% 3% 15%;
     color: #fff;
 }
 
-.channel:hover {
-    background-color: blue;
+.selected {
+    background-color: #800d20;
+}
+
+.channel:hover:not(.selected) {
+    background-color: #973848;
 }

@@ -7,7 +7,7 @@ html, body {
     font-family: Arial, Helvetica, sans-serif;
     position: absolute;
 }
-
 /* body {
-    min-height: 865px;
+    height: 865px !important;
+    position: absolute;
 } */

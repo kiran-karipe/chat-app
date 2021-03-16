@@ -1,7 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { io } from 'socket.io-client';
 import { StoreActionsService } from '../../shared/services/store-actions.service';
-// const SOCKET_ENDPOINT = 'localhost:3000';
+import { ChannelsMock } from '../../mock/channels-mock';
+import { Channel } from '../../interfaces/channel';
+import { SOCKET_ENDPOINT } from 'src/environments/environment';
+import { Store, select } from '@ngrx/store';
+import { getUserName, getSelectedChannel } from '../../shared/store-selector';
+import { SocketioMessageService } from 'src/app/shared/services/socketio-message.service';
+import { Message } from '../../interfaces/message';
+
 @Component({
   selector: 'app-chat-container',
   templateUrl: './chat-container.component.html',
@@ -9,25 +16,57 @@ import { StoreActionsService } from '../../shared/services/store-actions.service
 })
 export class ChatContainerComponent implements OnInit {
   socket: any;
-  constructor(private storeActionsService: StoreActionsService) { }
+  userName: string = '';
+  selectedChannel: Channel = {
+    name: '',
+    id: -1,
+    users: [],
+    messages: [],
+  };
+
+  constructor(private storeActionsService: StoreActionsService,
+          private channelsMock:ChannelsMock, private _store: Store,
+          private socketioMessageService: SocketioMessageService) {
+      this._store.pipe(select(getUserName)).subscribe(userName => {
+        if (userName) this.userName = userName;
+      });
+      this._store.pipe(select(getSelectedChannel)).subscribe(selectedChannel => {
+        if (selectedChannel) this.selectedChannel = selectedChannel;
+      })
+  }
 
   ngOnInit(): void {
+    this.userName = sessionStorage.getItem('userName') || '';
+    this.storeActionsService.updateUserName(this.userName);
+    this.getChannels();
     this.setupSocketConnection();
   }
 
-  setupSocketConnection() { 
-    this.socket = io('http://localhost:3000');
-    this.socket.on('message-broadcast', (data: string) => {
-      if (data) {
-        this.storeActionsService.updateIncomingMessages(data);
-        console.log("this is data: " + data);
+  setupSocketConnection() {
+    this.socket = io(SOCKET_ENDPOINT);
+    this.socket.on('message-broadcast', (message: Message) => {
+      if (message) {
+        this.socketioMessageService.updateIncomingSocketMessages(message);
       }
     });
-    console.log(this.socket);
   }
 
-  sendMessage(message: any) {
-    this.socket.emit('message', message);
+  sendMessage(message: string) {
+    const socketMessage: Message = {
+      name: this.userName,
+      message: message,
+      type: 'new',
+      id: Math.random().toString(),
+      channel_id: this.selectedChannel.id
+    }
+    this.socket.emit('message', socketMessage);
+    this.socketioMessageService.updateIncomingSocketMessages(socketMessage);
   }
 
+  getChannels() {
+    const channels: Channel[] = this.channelsMock.getChannels();
+    this.storeActionsService.updateChannels(channels);
+    this.storeActionsService.updateSelectedChannel(channels[0]);
+    this.storeActionsService.updateUsersInChannels(this.userName);
+  }
 }

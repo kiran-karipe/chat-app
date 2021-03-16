@@ -2,60 +2,129 @@
     width: 100%;
     text-align: center;
     height: 15%;
-    background-color: #fff;
+    background-color: #ffffff;
 }
 
 .channel-name {
     display: inline-block;
-    padding-top: 15px;
-    color: #808080;
+    padding-top: 10px;
+    color: #696969;
     font-size: 20px;
+    margin-top: 2%;
 }
 
-.one-edge-shadow {
-	-webkit-box-shadow: 0 8px 6px -6px black;
-	   -moz-box-shadow: 0 8px 6px -6px black;
-            box-shadow: 0 3px 6px -6px black;
+.one-edge-shadow-bottom {
+	-webkit-box-shadow: 0 8px 6px -6px #696969;
+	   -moz-box-shadow: 0 8px 6px -6px #696969;
+            box-shadow: 0 3px 6px -6px #696969;
+}
+
+.one-edge-shadow-top {
+	-webkit-box-shadow: 0 8px 6px -6px #696969;
+	   -moz-box-shadow: 0 8px 6px -6px #696969;
+            box-shadow: 0 3px 15px -6px #696969;
 }
 
 .chat-messages {
     width: 100%;
-    height: 70%;
-    overflow: auto;
+    height: 68%;
+    overflow-y: auto;
 }
 
-.message-div {
+.extra-space {
+    padding: 1% 0%;
+}
+.input-div {
     background-color: #fff;
     height: 15%;
 }
 
+.padding-top {
+    padding-top: 1%; 
+}
+
 .message-input {
     width: 80%;
-    margin: 2% 2% 0 2%;
+    margin: 2% 2% 0 5%;
     padding: 1% 1%;
+    border: 1px solid #e1e2e4;
+    border-radius: 3px;
+    outline: none;
+    box-shadow: inset 0px 0px 2px 0px #e1e2e4;
 }
 
 .send-button {
-    width: 10%;
+    width: 7%;
     padding: 1% 1%;
+    border: none;
+    border-radius: 10px;
+    background-color: white;
+    font-size: 20px;
+    font-weight: bold;
+    color: #4a90e2;
+    outline: none;
 }
 
-.your-message-div {
-    margin: 1% 0% 0% 1%;
+.send-button:hover {
+    background-color: red;
+    cursor: pointer;
+    color: #fff;
 }
 
-.your-message {
-    background-color: aquamarine;
-    padding-right: 1%;
-    border-radius: 10%;
+.messages {
+    margin: 1% 0% 0% 2%;
+    position: relative;
+    align-items: flex-start;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding-right: 5%;
+    padding-left: 5%;
 }
 
-.incoming-message-div {
-    margin: 1% 0% 0% 1%;
+.message-div {
+    background-color: #fff;
+    border-radius: 20px;
+    max-width: 25%;
+    min-height: 40px;
+    display: inline-block;    
 }
 
-.incoming-message {
-    background-color: cadetblue;
-    padding-right: 1%;
-    border-radius: 10%;
+.message {
+    padding: 10px 23px;
+    margin: 0;
+    font-family: "Helvetica® Neue";
+    color: #333333;
+}
+
+.channel-users-div {
+    min-height: 20px;
+    font-size: 13px;
+    line-height: 20px;
+    /* display: flex; */
+}
+
+.channel-users {
+    font-size: 12px;
+    color: #6e6e6e;
+}
+
+.message-float {
+    position: relative;
+    align-items: flex-end;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.message-background {
+    background-color: #ff1940;
+}
+
+.message-background > p{
+    color: #fff;
+}
+
+.from-user {
+    color: #ff1940;
 }

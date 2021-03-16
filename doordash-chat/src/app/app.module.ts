@@ -11,6 +11,9 @@ import { UserComponentComponent } from './components/user-component/user-compone
 import { ChannelsComponentComponent } from './components/channels-component/channels-component.component';
 import { StoreModule, Store } from '@ngrx/store';
 import { appReducer } from './app.reducer';
+import { ChannelsMock } from './mock/channels-mock';
+import { UserSessionComponent } from './components/user-session/user-session.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -19,7 +22,8 @@ import { appReducer } from './app.reducer';
     SideMenuContainerComponent,
     ChatBoxContainerComponent,
     UserComponentComponent,
-    ChannelsComponentComponent
+    ChannelsComponentComponent,
+    UserSessionComponent
   ],
   imports: [
     BrowserModule,
@@ -27,7 +31,7 @@ import { appReducer } from './app.reducer';
     FormsModule,
     StoreModule.forRoot({app: appReducer})
   ],
-  providers: [],
+  providers: [ChannelsMock],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

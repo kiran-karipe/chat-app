@@ -1,9 +1,8 @@
-<div>
-    <div>
-        <input placeholder="Username">
+<form #userNameForm="ngForm" (ngSubmit)="onUserName()" class="userNameContainer">
+    <div class="userNameInput">
+        <input placeholder="Type your username..." id="userName" class="userName"
+            [(ngModel)]="userName" name="userName" required>
     </div>
-    <div>
-        <button type="submit" routerLink="/doordash-chat" routerLinkActive="active">Join the DoorDash Chat</button>
-    </div>
-</div>
+    <div class="submitBtn"><button type="submit" [ngClass]="{'disabled': !userName, 'enabled': userName}" [disabled]="!userNameForm.form.valid">Join the DoorDash Chat</button></div>
+</form>
 <router-outlet></router-outlet>

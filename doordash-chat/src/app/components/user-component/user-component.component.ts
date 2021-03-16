@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-user-component',
@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./user-component.component.css']
 })
 export class UserComponentComponent implements OnInit {
-
+  @Input() userName: string = '';
   constructor() { }
 
   ngOnInit(): void {

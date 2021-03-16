@@ -3,5 +3,6 @@ export interface Message {
     message: string;
     id: string;
     reaction?: any;
-    isLoggedUser: boolean;
+    type?: string;
+    channel_id?: number;
 }

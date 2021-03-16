@@ -1,12 +1,22 @@
-<div class="channel one-edge-shadow">
-    <span class="channel-name">Channel Name</span>
-</div>
-<div class="chat-messages">
-    <div class="your-message-div" *ngFor="let message of messages">
-        <span class="your-message">{{message.message}}</span>
+<div class="channel one-edge-shadow-bottom">
+    <span class="channel-name">{{selectedChannel.name}}</span>
+    <div class="channel-users-div">
+        <span class="channel-users" *ngFor="let user of selectedChannel.users;  let indexOfelement=index;"
+            [ngClass]="{'from-user': user === userName}">
+            {{user}}{{indexOfelement !== selectedChannel.users.length - 1 ? ',' : ''}}</span>
     </div>
 </div>
-<div class="message-div">
-    <input class="message-input" [(ngModel)]="inputMessage" (keyup)="onMessageKeyUp($event)">
-    <button class="send-button" (click)="onMessageSend()">Send</button>
+<div class="chat-messages" #scrollMe>
+    <div class="messages" *ngFor="let message of messages" [ngClass]="{'message-float': message.name === userName}" #message>
+        <div class="message-div" [ngClass]="{'message-background': message.name === userName}">
+            <p class="message">{{message.message}}</p>
+        </div>
+    </div>
+</div>
+<div class="extra-space"></div>
+<div class="input-div one-edge-shadow-top">
+    <div class="padding-top">
+        <input class="message-input" [(ngModel)]="inputMessage" (keyup)="onMessageKeyUp($event)" placeholder="Type a message...">
+        <button class="send-button" (click)="onMessageSend()">Send</button>
+    </div>
 </div>
