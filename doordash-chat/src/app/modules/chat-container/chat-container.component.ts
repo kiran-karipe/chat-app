@@ -5,9 +5,10 @@ import { ChannelsMock } from '../../mock/channels-mock';
 import { Channel } from '../../interfaces/channel';
 import { SOCKET_ENDPOINT } from 'src/environments/environment';
 import { Store, select } from '@ngrx/store';
-import { getUserName, getSelectedChannel } from '../../shared/store-selector';
+import { getUserName, getSelectedChannel, getChannels, getUsers, getMessages } from '../../shared/store-selector';
 import { SocketioMessageService } from 'src/app/shared/services/socketio-message.service';
 import { Message } from '../../interfaces/message';
+import { MessageService } from 'src/app/shared/services/message.service';
 
 @Component({
   selector: 'app-chat-container',
@@ -17,21 +18,35 @@ import { Message } from '../../interfaces/message';
 export class ChatContainerComponent implements OnInit {
   socket: any;
   userName: string = '';
-  selectedChannel: Channel = {
+  selectedChannel = {
     name: '',
     id: -1,
     users: [],
     messages: [],
   };
-
+  channels: Channel[] = [];
+  users: string[] = [];
+  messages: Message[] = []
   constructor(private storeActionsService: StoreActionsService,
-          private channelsMock:ChannelsMock, private _store: Store,
+          private messageService: MessageService, private _store: Store,
           private socketioMessageService: SocketioMessageService) {
       this._store.pipe(select(getUserName)).subscribe(userName => {
         if (userName) this.userName = userName;
       });
       this._store.pipe(select(getSelectedChannel)).subscribe(selectedChannel => {
-        if (selectedChannel) this.selectedChannel = selectedChannel;
+        if (selectedChannel) {
+          this.selectedChannel = selectedChannel;
+          this.getChannelInformation(this.selectedChannel.id);
+        };
+      })
+      this._store.pipe(select(getChannels)).subscribe(channels => {
+        if (channels) this.channels = channels;
+      })
+      this._store.pipe(select(getUsers)).subscribe(users => {
+        if (users) this.users = users;
+      })
+      this._store.pipe(select(getMessages)).subscribe(messages => {
+        if (messages) this.messages = messages;
       })
   }
 
@@ -64,9 +79,19 @@ export class ChatContainerComponent implements OnInit {
   }
 
   getChannels() {
-    const channels: Channel[] = this.channelsMock.getChannels();
-    this.storeActionsService.updateChannels(channels);
-    this.storeActionsService.updateSelectedChannel(channels[0]);
-    this.storeActionsService.updateUsersInChannels(this.userName);
+    this.messageService.getRooms().subscribe((channels: any) => {
+      this.storeActionsService.updateChannels(channels);
+      this.storeActionsService.updateSelectedChannel(channels[0]);
+    });  
+  }
+
+  getChannelInformation(channelId: any) {
+    this.messageService.getRoomInformation(channelId).subscribe((room: any) => {
+      this.storeActionsService.updateChannelsInformation();
+      const firstName = this.userName.split(' ');
+      const users = [firstName[0], ...room[0].users]
+      this.storeActionsService.updateUsers(users);
+      this.storeActionsService.updateMessages(room[1]);
+    });
   }
 }

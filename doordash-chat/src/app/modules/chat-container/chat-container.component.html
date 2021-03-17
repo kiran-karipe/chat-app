@@ -1,8 +1,19 @@
 <div class="chat-container">
     <div class="side-menu">
-        <app-side-menu-container [userName]="userName"></app-side-menu-container>
+        <app-side-menu-container 
+            [userName]="userName"
+            [channels]="channels" 
+            [selectedChannel]="selectedChannel">
+        </app-side-menu-container>
     </div>
     <div class="chat-box">
-        <app-chat-box-container (sendMessageEvent)="sendMessage($event)"></app-chat-box-container>
+        <app-chat-box-container
+            *ngIf="users && messages.length > 0"
+            [userName]="userName"
+            [users]="users" 
+            [messages]="messages" 
+            [selectedChannel]="selectedChannel"
+            (sendMessageEvent)="sendMessage($event)">
+        </app-chat-box-container>
     </div>
 </div>

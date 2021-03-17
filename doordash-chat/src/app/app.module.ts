@@ -13,6 +13,7 @@ import { StoreModule, Store } from '@ngrx/store';
 import { appReducer } from './app.reducer';
 import { ChannelsMock } from './mock/channels-mock';
 import { UserSessionComponent } from './components/user-session/user-session.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { UserSessionComponent } from './components/user-session/user-session.com
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    HttpClientModule,
     StoreModule.forRoot({app: appReducer})
   ],
   providers: [ChannelsMock],

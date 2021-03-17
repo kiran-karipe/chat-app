@@ -1,7 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Store, select } from '@ngrx/store';
 import { Channel } from '../../interfaces/channel';
-import { getChannels, getSelectedChannel } from '../../shared/store-selector';
 
 @Component({
   selector: 'app-side-menu-container',
@@ -10,23 +8,15 @@ import { getChannels, getSelectedChannel } from '../../shared/store-selector';
 })
 
 export class SideMenuContainerComponent implements OnInit {
-  channels: Channel[] = [];
-  selectedChannel: Channel = {
+  
+  @Input() selectedChannel: Channel = {
     name: '',
     id: -1,
-    users: [],
-    messages: [],
   };
   @Input() userName: string = '';
+  @Input() channels: Channel[] = [];
 
-  constructor(private _store: Store) {
-    this._store.pipe(select(getChannels)).subscribe(channels => {
-      this.channels = channels;
-    });
-    this._store.pipe(select(getSelectedChannel)).subscribe(selectedChannel => {
-      this.selectedChannel = selectedChannel;
-      console.log(this.selectedChannel);
-    });
+  constructor() {
   }
 
   ngOnInit(): void {

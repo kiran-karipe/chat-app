@@ -6,6 +6,7 @@ ul {
 .channel {
     padding: 3% 4% 3% 15%;
     color: #fff;
+    cursor: pointer;
 }
 
 .selected {

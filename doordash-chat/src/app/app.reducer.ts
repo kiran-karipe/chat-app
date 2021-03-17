@@ -13,33 +13,26 @@ export interface AppState {
     selectedChannel: any;
     channels: Channel[];
     userName: string;
+    users: string[];
+    messages: Message[];
+    channelsInformation: any;
 }
 export const initialState: AppState = {
     incomingMessages: [],
     selectedChannel: '',
     channels: [],
     userName: '',
+    users: [],
+    messages: [],
+    channelsInformation: []
 };
 
 export function appReducer(state=initialState, action: AppAction) {
     switch(action.type) {
-        case ACTIONS.UPDATE_INCOMING_MESSAGES:
-            return {
-                ...state,
-                incomingMessages: [...state.incomingMessages, action.payload]
-            }
         case ACTIONS.ADD_NEW_MESSAGE:
-            const newChannels = state.channels.map((channel) => {
-                const tempChannel = Object.assign({}, channel);
-                if(tempChannel.id === action.payload.channel_id) {
-                    tempChannel.messages = [...tempChannel.messages, action.payload];
-                }
-                return tempChannel;
-            });
-
             return {
                 ...state,
-                channels: newChannels
+                messages: [...state.messages, action.payload]
             }
         case ACTIONS.UPDATE_SELECTED_CHANNEL:
             return {
@@ -56,15 +49,15 @@ export function appReducer(state=initialState, action: AppAction) {
                 ...state,
                 userName: action.payload
             }
-        case ACTIONS.UPDATE_USER_IN_CHANNEL:
-            const updateChannels = state.channels.map((channel) => {
-                const tempChannel = Object.assign({}, channel);
-                tempChannel.users = [action.payload, ...tempChannel.users];
-                return tempChannel;
-            });
+        case ACTIONS.UPDATE_USERS:
             return {
                 ...state,
-                channels: updateChannels
+                users: action.payload
+            }
+        case ACTIONS.UPDATE_MESSAGES:
+            return {
+                ...state,
+                messages: action.payload
             }
         default:
             return state;

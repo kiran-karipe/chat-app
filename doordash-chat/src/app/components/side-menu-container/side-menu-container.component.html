@@ -1,7 +1,11 @@
 <div class="side-menu-container">
     <div class="user"><app-user-component [userName]="userName"></app-user-component></div>
     <div class="channels">
-        <app-channels-component [channels]="channels" [selectedChannel]="selectedChannel"></app-channels-component>
+        <app-channels-component 
+            [channels]="channels" 
+            [selectedChannel]="selectedChannel"
+            >
+        </app-channels-component>
     </div>
 </div>
 

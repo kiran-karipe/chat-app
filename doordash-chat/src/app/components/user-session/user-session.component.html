@@ -1,1 +1,3 @@
-<p class="timer">Online for {{count}} minutes</p>
+<p class="timer" *ngIf="count === 0">Online just now</p>
+<p class="timer" *ngIf="count === 1">Online for {{count}} minute</p>
+<p class="timer" *ngIf="count !== 0 && count !== 1">Online for {{count}} minutes</p>

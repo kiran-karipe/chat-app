@@ -9,18 +9,16 @@ import { Channel } from '../../interfaces/channel';
 })
 export class ChannelsComponentComponent implements OnInit {
   @Input() channels: Channel[] = [];
-  @Input() selectedChannel: Channel = {
+  @Input() selectedChannel = {
     name: '',
-    id: -1,
-    users: [],
-    messages: [],
-  };
+    id: -1, 
+  };  
   constructor(private storeActionsService: StoreActionsService) { }
 
   ngOnInit(): void {
   }
 
-  onChannelSelect(channel: any) {
+  onChannelSelect(channel: Channel) {
     this.storeActionsService.updateSelectedChannel(channel);
   }
 }
