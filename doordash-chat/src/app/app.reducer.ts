@@ -2,6 +2,7 @@ import { Action } from '@ngrx/store';
 import { ACTIONS } from './shared/actions';
 import { Channel } from './interfaces/channel';
 import { Message } from './interfaces/message';
+import { ChannelData } from './interfaces/channel-data';
 
 interface AppAction extends Action {
     type: string;
@@ -9,30 +10,60 @@ interface AppAction extends Action {
 }
 
 export interface AppState {
-    incomingMessages: any;
     selectedChannel: any;
     channels: Channel[];
     userName: string;
-    users: string[];
-    messages: Message[];
-    channelsInformation: any;
+    channelsData: ChannelData[];
+    selectedChannelData: ChannelData;
 }
 export const initialState: AppState = {
-    incomingMessages: [],
     selectedChannel: '',
     channels: [],
     userName: '',
-    users: [],
-    messages: [],
-    channelsInformation: []
+    channelsData: [],
+    selectedChannelData: {
+        channel: {
+          id: -1,
+          name: ''
+        },
+        messages: [],
+        users: []
+    }
 };
 
 export function appReducer(state=initialState, action: AppAction) {
     switch(action.type) {
-        case ACTIONS.ADD_NEW_MESSAGE:
+
+        case ACTIONS.UPDATE_CHANNELS_DATA:
+            let found = false;
+            const newChannelsData = state.channelsData.map(channelData => {
+                if (channelData.channel.id === action.payload.channel.id) {
+                    channelData = action.payload;
+                    found = true;
+                }
+                return channelData;
+            })
+            if (!found) newChannelsData.push(action.payload)
             return {
                 ...state,
-                messages: [...state.messages, action.payload]
+                channelsData: newChannelsData
+            }
+        case ACTIONS.UPDATE_SELECTED_CHANNELS_DATA:
+            return {
+                ...state,
+                selectedChannelData: action.payload
+            }
+        case ACTIONS.ADD_NEW_MESSAGE_TO_CHANNEL:
+            const newChannelsDataMessages = state.channelsData.map(channelData => {
+                const tempChannelData = Object.assign({}, channelData);
+                if(tempChannelData.channel.id === action.payload.channel_id) {
+                    tempChannelData.messages = [...tempChannelData.messages, action.payload];
+                }
+                return tempChannelData;
+            })
+            return {
+                ...state,
+                channelsData: newChannelsDataMessages
             }
         case ACTIONS.UPDATE_SELECTED_CHANNEL:
             return {
@@ -48,16 +79,6 @@ export function appReducer(state=initialState, action: AppAction) {
             return {
                 ...state,
                 userName: action.payload
-            }
-        case ACTIONS.UPDATE_USERS:
-            return {
-                ...state,
-                users: action.payload
-            }
-        case ACTIONS.UPDATE_MESSAGES:
-            return {
-                ...state,
-                messages: action.payload
             }
         default:
             return state;

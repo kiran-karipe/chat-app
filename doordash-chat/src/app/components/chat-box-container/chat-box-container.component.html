@@ -1,13 +1,13 @@
 <div class="channel one-edge-shadow-bottom">
     <span class="channel-name">{{selectedChannel.name}}</span>
     <div class="channel-users-div">
-        <span class="channel-users" *ngFor="let user of users;  let indexOfelement=index;"
+        <span class="channel-users" *ngFor="let user of selectedChannelData.users;  let indexOfelement=index;"
             [ngClass]="{'from-user': user === userName.split(' ')[0]}">
-            {{user}}{{indexOfelement !== users.length - 1 ? ',' : ''}}</span>
+            {{user}}{{indexOfelement !== selectedChannelData.users.length - 1 ? ',' : ''}}</span>
     </div>
 </div>
-<div class="chat-messages" #scrollMe *ngIf="messages">
-    <div class="messages" *ngFor="let message of messages" [ngClass]="{'message-float': message.name === userName}" #message>
+<div class="chat-messages" #scrollMe *ngIf="selectedChannelData.messages">
+    <div class="messages" *ngFor="let message of selectedChannelData.messages" [ngClass]="{'message-float': message.name === userName}" #message>
         <div class="message-div" [ngClass]="{'message-background': message.name === userName}">
             <p class="message">{{message.message}}</p>
         </div>

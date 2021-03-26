@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { io } from 'socket.io-client';
 import { StoreActionsService } from '../../shared/services/store-actions.service';
-import { ChannelsMock } from '../../mock/channels-mock';
 import { Channel } from '../../interfaces/channel';
 import { SOCKET_ENDPOINT } from 'src/environments/environment';
 import { Store, select } from '@ngrx/store';
-import { getUserName, getSelectedChannel, getChannels, getUsers, getMessages } from '../../shared/store-selector';
+import { getUserName, getSelectedChannel, getChannels, getChannelsData, getSelectedChannelData } from '../../shared/store-selector';
 import { SocketioMessageService } from 'src/app/shared/services/socketio-message.service';
 import { Message } from '../../interfaces/message';
 import { MessageService } from 'src/app/shared/services/message.service';
+import { ChannelData } from '../../interfaces/channel-data';
 
 @Component({
   selector: 'app-chat-container',
@@ -18,20 +18,36 @@ import { MessageService } from 'src/app/shared/services/message.service';
 export class ChatContainerComponent implements OnInit {
   socket: any;
   userName: string = '';
-  selectedChannel = {
+  selectedChannel: Channel = {
     name: '',
     id: -1,
-    users: [],
-    messages: [],
   };
+  channelsData: ChannelData[] = [];
   channels: Channel[] = [];
-  users: string[] = [];
-  messages: Message[] = []
+  selectedChannelData: ChannelData = {
+    channel: {
+      id: -1,
+      name: ''
+    },
+    messages: [],
+    users: []
+  };
   constructor(private storeActionsService: StoreActionsService,
           private messageService: MessageService, private _store: Store,
           private socketioMessageService: SocketioMessageService) {
       this._store.pipe(select(getUserName)).subscribe(userName => {
         if (userName) this.userName = userName;
+      });
+      this._store.pipe(select(getChannelsData)).subscribe(channelsData => {
+        if (channelsData) {
+          this.channelsData = channelsData;
+          this.updateSelectedChannelData();
+        }
+      });
+      this._store.pipe(select(getSelectedChannelData)).subscribe(selectedChannelData => {
+        if (selectedChannelData) {
+          this.selectedChannelData = selectedChannelData;
+        };
       });
       this._store.pipe(select(getSelectedChannel)).subscribe(selectedChannel => {
         if (selectedChannel) {
@@ -41,17 +57,11 @@ export class ChatContainerComponent implements OnInit {
       })
       this._store.pipe(select(getChannels)).subscribe(channels => {
         if (channels) this.channels = channels;
-      })
-      this._store.pipe(select(getUsers)).subscribe(users => {
-        if (users) this.users = users;
-      })
-      this._store.pipe(select(getMessages)).subscribe(messages => {
-        if (messages) this.messages = messages;
-      })
+      });
   }
 
   ngOnInit(): void {
-    this.userName = sessionStorage.getItem('userName') || '';
+    this.userName = sessionStorage.getItem('userName') || 'Sai Kiran Karipe';
     this.storeActionsService.updateUserName(this.userName);
     this.getChannels();
     this.setupSocketConnection();
@@ -82,16 +92,42 @@ export class ChatContainerComponent implements OnInit {
     this.messageService.getRooms().subscribe((channels: any) => {
       this.storeActionsService.updateChannels(channels);
       this.storeActionsService.updateSelectedChannel(channels[0]);
+      channels.forEach((channel: Channel) => {
+        this.getChannelInformation(channel.id);
+      });
     });  
   }
 
   getChannelInformation(channelId: any) {
     this.messageService.getRoomInformation(channelId).subscribe((room: any) => {
-      this.storeActionsService.updateChannelsInformation();
       const firstName = this.userName.split(' ');
-      const users = [firstName[0], ...room[0].users]
-      this.storeActionsService.updateUsers(users);
-      this.storeActionsService.updateMessages(room[1]);
+      let users: string[] = [];
+      if (room[0].users.indexOf(firstName[0]) < 0) {
+        users = [firstName[0], ...room[0].users];
+      }      
+      const channelData: ChannelData = {
+        channel: {
+          id: room[0].id,
+          name: room[0].name,
+        },
+        messages: room[1],
+        users: users
+      }
+      this.updateChannelsData(channelData);
     });
+  }
+
+  updateChannelsData(channelData: ChannelData) {
+    this.storeActionsService.updateChannelsData(channelData);
+  }
+
+  updateSelectedChannelData() { 
+    for (let i = 0; i < this.channelsData.length; i++) {
+      if (this.channelsData[i].channel.id === this.selectedChannel.id) {
+        this.selectedChannelData = this.channelsData[i];
+        break;
+      }
+    }
+    this.storeActionsService.updateSelectedChannelsData(this.selectedChannelData);
   }
 }

@@ -11,7 +11,7 @@ export class SocketioMessageService {
 
   updateIncomingSocketMessages(message: Message) {
     if (message.type === 'new') {
-      this.storeActionsService.addNewMessage(message);
+      this.storeActionsService.addNewMessageToChannelsData(message);
     }
   }
 }

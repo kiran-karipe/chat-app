@@ -8,11 +8,9 @@
     </div>
     <div class="chat-box">
         <app-chat-box-container
-            *ngIf="users && messages.length > 0"
+            *ngIf="selectedChannelData"
             [userName]="userName"
-            [users]="users" 
-            [messages]="messages" 
-            [selectedChannel]="selectedChannel"
+            [selectedChannelData]="selectedChannelData" 
             (sendMessageEvent)="sendMessage($event)">
         </app-chat-box-container>
     </div>

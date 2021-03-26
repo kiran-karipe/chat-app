@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit, Output, EventEmitter, Input, ViewChild, ElementRef, ViewChildren, QueryList } from '@angular/core';
-import { Message } from '../../interfaces/message';
 import { Channel } from '../../interfaces/channel';
+import { ChannelData } from '../../interfaces/channel-data';
 
 @Component({
   selector: 'app-chat-box-container',
@@ -10,8 +10,14 @@ import { Channel } from '../../interfaces/channel';
 export class ChatBoxContainerComponent implements OnInit, AfterViewInit {
   inputMessage = '';  
   
-  @Input() users: string[] = [];
-  @Input() messages: Message[] = [];
+  @Input() selectedChannelData: ChannelData = {
+    channel: {
+      id: -1,
+      name: ''
+    },
+    messages: [],
+    users: []
+  };
   @Input() userName: string = '';
   @Input() selectedChannel: Channel = {
     name: '',
