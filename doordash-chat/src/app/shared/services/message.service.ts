@@ -14,14 +14,7 @@ export class MessageService {
     return this.http.get(SOCKET_ENDPOINT + '/rooms');
   }
 
-  // getRoomsResponse() {
-  //   this.getRoomWithId(room.id).subscribe((room) => {
-
-  //   });
-  //   this.getMessages(room.id);
-  // }
-
-  getRoomInformation(roomId: any) {
+  getChannelInformation(roomId: any) {
     const getRoomUsers = this.getRoom(roomId);
     const getRoomMessages = this.getMessages(roomId);
 

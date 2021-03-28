@@ -99,7 +99,7 @@ export class ChatContainerComponent implements OnInit {
   }
 
   getChannelInformation(channelId: any) {
-    this.messageService.getRoomInformation(channelId).subscribe((room: any) => {
+    this.messageService.getChannelInformation(channelId).subscribe((room: any) => {
       const firstName = this.userName.split(' ');
       let users: string[] = [];
       if (room[0].users.indexOf(firstName[0]) < 0) {
